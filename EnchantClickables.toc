@@ -1,18 +1,16 @@
 ## Interface: 11505
-# ## Interface-Classic: 11505
-# ## Interface-BCC: 20504
-## Title: Enchant Clickables v4
+## Interface-Classic: 11505
+## Interface-BCC: 20504
+## Title: Enchant Clickables
 ## Author: CaffeineAddiction
 ## Version: @project-version@
 ## Notes: Port of a Notorious Clickable WeakAura
-# ## X-Website: https://www.curseforge.com/wow/addons/sudo
-# ## X-Curse-Project-ID: 479943
-# ## X-WoWI-ID: 25995
-# ## X-Wago-ID: 0mKOJg6x
+## X-Website: https://www.curseforge.com/wow/addons/enchant-clickables
+## X-Curse-Project-ID: 1157294
+## X-WoWI-ID: 26881
+## X-Wago-ID: mNwQvPKo
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
-# ## SavedVariables: EnchantClickablesSavedAccount
-# ## SavedVariablesPerCharacter: EnchantClickablesSavedChar
 ## IconTexture: Interface\Icons\trade_engraving
 
 Init.lua
