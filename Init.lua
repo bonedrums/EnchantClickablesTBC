@@ -36,7 +36,7 @@ end
 local function UpdateFramePosition(frame)
     if TradeFrame and TradeFrame:IsVisible() then
         frame:ClearAllPoints()
-        frame:SetPoint("TOPLEFT", TradeFrame, "TOPRIGHT", 5, 0)
+        frame:SetPoint("BOTTOMLEFT", TradeFrame, "BOTTOMRIGHT", 5, 0)
         frame:Show()
     else
         frame:Hide()
@@ -137,6 +137,7 @@ eventFrame:RegisterEvent("TRADE_CLOSED")
 eventFrame:RegisterEvent("TRADE_UPDATE")
 eventFrame:RegisterEvent("TRADE_TARGET_ITEM_CHANGED")
 eventFrame:RegisterEvent("UNIT_INVENTORY_CHANGED")
+eventFrame:RegisterEvent("TRADE_REPLACE_ENCHANT")
 
 local mainFrame = nil
 
@@ -152,5 +153,10 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
         if mainFrame and mainFrame:IsVisible() then
             UpdateEnchantsForItem(mainFrame)
         end
+    elseif event == "TRADE_REPLACE_ENCHANT" then
+        local e1, e2 = ...
+        local tMsg = "Replace " .. e1 .. " with " .. e2 .. "?"
+        local tTradePartner = GetUnitName("NPC")
+        SendChatMessage(tMsg, "WHISPER", "Common", tTradePartner)
     end
 end)
