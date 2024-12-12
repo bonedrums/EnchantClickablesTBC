@@ -219,3 +219,30 @@ tmp = {
     { spell_id = 44383, icon_id = 132484, name = "enchant-shield-resilience" }
 }
 EnchantList["INVTYPE_SHIELD"] = tmp
+
+tmp = {
+    { spell_id = 1804, icon_id = 136058, name = "pick-lock" }
+}
+EnchantList["INVTYPE_NON_EQUIP"] = tmp
+
+tmp = {
+        -- Magic
+        { item_id = 10939, icon_id = 132866, name = "split-greater-magic" },
+        { item_id = 10938, icon_id = 132867, name = "join-lesser-magic" },
+        -- Astral
+        { item_id = 11082, icon_id = 132862, name = "split-greater-astral" },
+        { item_id = 10998, icon_id = 132863, name = "join-lesser-astral" },
+        -- Mystic
+        { item_id = 11135, icon_id = 132868, name = "split-greater-mystic" },
+        { item_id = 11134, icon_id = 132869, name = "join-lesser-mystic" },
+        -- Nether
+        { item_id = 11175, icon_id = 132870, name = "split-greater-nether" },
+        { item_id = 11174, icon_id = 132871, name = "join-lesser-nether" },
+        -- Eternal
+        { item_id = 16203, icon_id = 132864, name = "split-greater-eternal" },
+        { item_id = 16202, icon_id = 132865, name = "join-lesser-eternal" },
+        -- Planar
+        { item_id = 22446, icon_id = 132860, name = "split-greater-planar" },
+        { item_id = 22447, icon_id = 132861, name = "join-lesser-planar" },
+}
+EnchantList["ESSENCE"] = tmp

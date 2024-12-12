@@ -1,6 +1,32 @@
 local addonName, addon = ...
 
-local function EC_spellIsKnown(spell_id)
+-- Function to count items in bags
+local function GetItemCount(itemId)
+    local count = 0
+    for bag = 0, 4 do
+        for slot = 1, C_Container.GetContainerNumSlots(bag) do
+            local itemLink = C_Container.GetContainerItemLink(bag, slot)
+            if itemLink then
+                local _, _, itemString = strfind(itemLink, "item:(%d+)")
+                if itemString and tonumber(itemString) == itemId then
+                    local info = C_Container.GetContainerItemInfo(bag, slot)
+                    if info then
+                        count = count + info.stackCount
+                    end
+                end
+            end
+        end
+    end
+    return count
+end
+
+-- Function to get item name from ID
+local function GetItemNameFromID(itemId)
+    local itemName = GetItemInfo(itemId)
+    return itemName
+end
+
+local function SpellIsKnown(spell_id)
     t = GetSpellInfo(GetSpellInfo(spell_id))
     if t == nil then
         return false
@@ -8,7 +34,7 @@ local function EC_spellIsKnown(spell_id)
     return true
 end
 
-local function EC_HaveMats(spell_id)
+local function HaveMats(spell_id)
     tReturn = IsUsableSpell(spell_id)
     return tReturn
 end
@@ -43,12 +69,64 @@ local function UpdateFramePosition(frame)
     end
 end
 
+-- Create individual essence frame
+local function CreateEssenceFrame(parent, essence, index, totalButtons)
+    local frame = CreateFrame("Button", "EssenceButton"..index, parent, "SecureActionButtonTemplate")
+    frame:SetSize(240, 23)
+    -- Calculate position from bottom
+    local bottomOffset = 25 * (totalButtons - index)
+    frame:SetPoint("BOTTOMLEFT", parent, "BOTTOMLEFT", 8, bottomOffset)
+    
+    local itemName = GetItemNameFromID(essence.item_id)
+    if not itemName then
+        print("Warning: Could not find item info for ID:", essence.item_id)
+        return
+    end
+    
+    frame:SetAttribute("type", "item")
+    frame:SetAttribute("item", itemName)
+    frame:EnableMouse(true)
+    
+    local bg = frame:CreateTexture(nil, "BACKGROUND")
+    bg:SetAllPoints()
+    bg:SetColorTexture(0.1, 0.1, 0.1, 0)
+    
+    local icon = frame:CreateTexture(nil, "ARTWORK")
+    icon:SetSize(20, 20)
+    icon:SetPoint("LEFT", frame, "LEFT", 4, 0)
+    icon:SetTexture(essence.icon_id)
+    
+    local text = frame:CreateFontString(nil, "ARTWORK", "GameFontNormal")
+    text:SetPoint("LEFT", icon, "RIGHT", 8, 0)
+    text:SetText(itemName)
+    
+    -- Check if it's a split or join based on name
+    local isSplit = string.find(essence.name, "split")
+    local itemCount = GetItemCount(essence.item_id)
+    
+    -- Set color based on whether we have enough items
+    if (isSplit and itemCount >= 1) or (not isSplit and itemCount >= 3) then
+        text:SetTextColor(0, 1, 0)  -- Green if we have enough
+    else
+        text:SetTextColor(1, 0, 0)  -- Red if we don't
+    end
+    
+    frame:SetScript("OnEnter", function(self)
+        bg:SetColorTexture(0.2, 0.2, 0.2, 0.8)
+    end)
+    frame:SetScript("OnLeave", function(self)
+        bg:SetColorTexture(0.1, 0.1, 0.1, 0)
+    end)
+    
+    return frame
+end
+
 -- Create individual enchant frame
 local function CreateEnchantFrame(parent, enchant, index, totalButtons)
     local frame = CreateFrame("Button", "EnchantButton"..index, parent, "SecureActionButtonTemplate")
-    frame:SetSize(240, 30)
+    frame:SetSize(240, 23)
     -- Calculate position from bottom
-    local bottomOffset = 32 * (totalButtons - index)
+    local bottomOffset = 25 * (totalButtons - index)
     frame:SetPoint("BOTTOMLEFT", parent, "BOTTOMLEFT", 8, bottomOffset)
     
     local spellName = GetSpellInfo(enchant.spell_id)
@@ -99,27 +177,46 @@ local function ClearEnchantFrames(container)
 end
 
 -- Function to update enchants based on traded item
-local function UpdateEnchantsForItem(mainFrame)
+local function onUpdate(mainFrame)
+    UpdateFramePosition(mainFrame)
     -- Always clear existing enchant frames first
     ClearEnchantFrames(mainFrame.enchantContainer)
 
-    local tItemLink = GetTradeTargetItemLink(7)
-    if not tItemLink then return end
-    
-    local itemName, _, _, _, _, _, _, _, itemEquipLoc = GetItemInfo(tItemLink)
-    if not itemEquipLoc or not EnchantList[itemEquipLoc] then return end
-    
-    -- First count valid enchants
+    -- Get valid enchants for the item
     local validEnchants = {}
-    for _, enchant in ipairs(EnchantList[itemEquipLoc]) do
-        if EC_spellIsKnown(enchant.spell_id) and EC_HaveMats(enchant.spell_id) then
-            table.insert(validEnchants, enchant)
+    local tItemLink = GetTradeTargetItemLink(7)
+    if tItemLink then 
+        local itemName, _, _, _, _, _, _, _, itemEquipLoc = GetItemInfo(tItemLink)
+        if itemEquipLoc and EnchantList[itemEquipLoc] then
+            for _, enchant in ipairs(EnchantList[itemEquipLoc]) do
+                if SpellIsKnown(enchant.spell_id) and HaveMats(enchant.spell_id) then
+                    table.insert(validEnchants, enchant)
+                end
+            end
         end
     end
     
-    -- Create new enchant frames for the item type
+    -- Get valid essence splits/joins
+    local validEssences = {}
+    for _, essence in ipairs(EnchantList["ESSENCE"]) do
+        local itemCount = GetItemCount(essence.item_id)
+        local isSplit = string.find(essence.name, "split")
+        
+        -- For splits we need at least 1, for joins we need at least 3
+        if (isSplit and itemCount >= 1) or (not isSplit and itemCount >= 3) then
+            table.insert(validEssences, essence)
+        end
+    end
+    
+    -- Create frames for item enchants
+    local totalButtons = #validEnchants + #validEssences
     for index, enchant in ipairs(validEnchants) do
-        CreateEnchantFrame(mainFrame.enchantContainer, enchant, index, #validEnchants)
+        CreateEnchantFrame(mainFrame.enchantContainer, enchant, index, totalButtons)
+    end
+    
+    -- Create frames for essences after enchants
+    for index, essence in ipairs(validEssences) do
+        CreateEssenceFrame(mainFrame.enchantContainer, essence, index + #validEnchants, totalButtons)
     end
 end
 
@@ -146,12 +243,11 @@ eventFrame:SetScript("OnEvent", function(self, event, ...)
         mainFrame = InitializeAddon()
     elseif event == "TRADE_SHOW" or event == "TRADE_CLOSED" then
         if mainFrame then
-            ClearEnchantFrames(mainFrame.enchantContainer)
-            UpdateFramePosition(mainFrame)
+            onUpdate(mainFrame)
         end
     elseif event == "TRADE_UPDATE" or event == "TRADE_TARGET_ITEM_CHANGED" or event == "UNIT_INVENTORY_CHANGED" then
         if mainFrame and mainFrame:IsVisible() then
-            UpdateEnchantsForItem(mainFrame)
+            onUpdate(mainFrame)
         end
     elseif event == "TRADE_REPLACE_ENCHANT" then
         local e1, e2 = ...
