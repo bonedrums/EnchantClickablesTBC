@@ -1,6 +1,6 @@
 EnchantList = {}
 
-tmp = {
+local tmp = {
     { spell_id = 13538, icon_id = 135940, name = "enchant-chest-lesser-absorption" },
     { spell_id = 13607, icon_id = 135861, name = "enchant-chest-mana" },
     { spell_id = 13626, icon_id = 136078, name = "enchant-chest-minor-stats" },
