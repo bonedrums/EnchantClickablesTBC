@@ -2,7 +2,7 @@
 
 **Stop typing `/cast Enchant Bracer - Superior Strength`.** Open a trade, and every enchant you can actually cast on the customer's item appears as a one-click button next to the trade window.
 
-Updated for **TBC Anniversary (2.5.5)**. A fork of [caffeineaddiction/EnchantClickables](https://github.com/caffeineaddiction/EnchantClickables), itself a port of a Notorious clickable WeakAura.
+Updated for **TBC Anniversary (2.5.6)**. A fork of [caffeineaddiction/EnchantClickables](https://github.com/caffeineaddiction/EnchantClickables), itself a port of a Notorious clickable WeakAura.
 
 <img width="752" height="323" alt="The enchant list docked to the right of the trade window" src="https://github.com/user-attachments/assets/50215a78-1f0f-47c5-b3b1-13062aff9914" />
 
@@ -84,23 +84,23 @@ Move the `EnchantClickables` folder into WoW's AddOns folder:
 
 **Windows**
 ```
-C:\Program Files (x86)\World of Warcraft\_classic_\Interface\AddOns\
+C:\Program Files (x86)\World of Warcraft\_anniversary_\Interface\AddOns\
 ```
-Fastest route: open the Battle.net app, click **World of Warcraft**, click the **gear icon** next to the Play button, and choose **Show in Explorer**. From there open `_classic_` → `Interface` → `AddOns`.
+Fastest route: open the Battle.net app, click **World of Warcraft**, set the version dropdown above the Play button to **WoW Anniversary**, then click the **gear icon** next to Play and choose **Show in Explorer**. From there open `_anniversary_` → `Interface` → `AddOns`.
 
 **Mac**
 ```
-/Applications/World of Warcraft/_classic_/Interface/AddOns/
+/Applications/World of Warcraft/_anniversary_/Interface/AddOns/
 ```
-Fastest route: in Battle.net click the **gear icon** next to Play → **Show in Finder**. From there open `_classic_` → `Interface` → `AddOns`.
+Fastest route: in Battle.net select **World of Warcraft**, set the version dropdown above Play to **WoW Anniversary**, then click the **gear icon** next to Play → **Show in Finder**. From there open `_anniversary_` → `Interface` → `AddOns`.
 
 > [!NOTE]
-> `_classic_` is the Burning Crusade / Anniversary folder — the underscores on both ends are part of the name. Don't use `_retail_` or `_classic_era_`. If you don't see an `AddOns` folder inside `Interface`, just create one with that exact spelling.
+> `_anniversary_` is the Anniversary (Burning Crusade) folder — the underscores on both ends are part of the name. Your WoW directory very likely holds several of these side by side, and they are **not** interchangeable: `_classic_era_` is Classic Era, `_classic_` is the older progression Classic client, and `_retail_` is modern WoW. Only `_anniversary_` is right for this addon. If there's no `AddOns` folder inside `Interface`, create one with that exact spelling.
 
 When you're done it should look like this:
 
 ```
-_classic_/
+_anniversary_/
 └── Interface/
     └── AddOns/
         └── EnchantClickables/
@@ -129,7 +129,7 @@ Repeat the same steps and overwrite the old `EnchantClickables` folder when aske
 
 ## Notes on the TBC port
 
-The original addon's buttons did nothing on 2.5.5. The client only processes the click phase matching `useOnKeyDown` — driven by the `ActionButtonUseKeyDown` CVar, which is **on by default** — and a plain button registers only `LeftButtonUp`, so every click was silently swallowed. Buttons now register both phases and pin the action to mouse release, firing exactly once.
+The original addon's buttons did nothing on 2.5.6. The client only processes the click phase matching `useOnKeyDown` — driven by the `ActionButtonUseKeyDown` CVar, which is **on by default** — and a plain button registers only `LeftButtonUp`, so every click was silently swallowed. Buttons now register both phases and pin the action to mouse release, firing exactly once.
 
 The rest of the 1.0.3 pass was durability work:
 

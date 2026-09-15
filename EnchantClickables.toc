@@ -1,4 +1,4 @@
-## Interface: 20505
+## Interface: 20506
 ## Title: Enchant Clickables
 ## Author: CaffeineAddiction (TBC port by Bone)
 ## Version: 1.0.3
