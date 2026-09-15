@@ -1,6 +1,6 @@
 ## Interface: 20505
 ## Title: Enchant Clickables
-## Author: CaffeineAddiction
+## Author: CaffeineAddiction (TBC port by Bone)
 ## Version: 1.0.3
 ## Notes: Port of a Notorious Clickable WeakAura
 ## X-Website: https://www.curseforge.com/wow/addons/enchant-clickables
