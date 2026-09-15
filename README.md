@@ -57,7 +57,73 @@ Two extras ride along in the same list:
 
 ## Installing
 
-Drop the `EnchantClickables` folder into `World of Warcraft\_classic_\Interface\AddOns\`. Restart the client or `/reload`. There's nothing to turn on — open a trade and it's there.
+No Git or GitHub account needed — this is a download-and-drag job. It takes about two minutes.
+
+### Step 1 — Download it
+
+1. Go to the [project page](https://github.com/bonedrums/EnchantClickablesTBC).
+2. Click the green **`< > Code`** button near the top right.
+3. Click **Download ZIP** at the bottom of the menu that drops down.
+
+You'll get a file called `EnchantClickablesTBC-main.zip`.
+
+### Step 2 — Unzip and rename the folder
+
+> [!IMPORTANT]
+> **The folder must end up named exactly `EnchantClickables`.** GitHub names it `EnchantClickablesTBC-main`, and WoW will silently ignore it under that name — the addon simply won't appear in game. This one rename is the step everybody misses.
+
+**Windows:** Right-click the ZIP → **Extract All…** → **Extract**. Open the extracted folder. Inside you'll see *another* folder named `EnchantClickablesTBC-main` — that's the one you want. Right-click it → **Rename** → type `EnchantClickables`.
+
+**Mac:** Double-click the ZIP in Finder (Safari may have already unzipped it into Downloads). You'll get a folder named `EnchantClickablesTBC-main`. Click it once, press <kbd>Return</kbd>, and type `EnchantClickables`.
+
+You should now have a folder named `EnchantClickables` containing `EnchantClickables.toc`, `Init.lua`, and `EnchantList.lua`. If those files are buried one folder deeper, you renamed the wrong folder — go one level in.
+
+### Step 3 — Drop it in your AddOns folder
+
+Move the `EnchantClickables` folder into WoW's AddOns folder:
+
+**Windows**
+```
+C:\Program Files (x86)\World of Warcraft\_classic_\Interface\AddOns\
+```
+Fastest route: open the Battle.net app, click **World of Warcraft**, click the **gear icon** next to the Play button, and choose **Show in Explorer**. From there open `_classic_` → `Interface` → `AddOns`.
+
+**Mac**
+```
+/Applications/World of Warcraft/_classic_/Interface/AddOns/
+```
+Fastest route: in Battle.net click the **gear icon** next to Play → **Show in Finder**. From there open `_classic_` → `Interface` → `AddOns`.
+
+> [!NOTE]
+> `_classic_` is the Burning Crusade / Anniversary folder — the underscores on both ends are part of the name. Don't use `_retail_` or `_classic_era_`. If you don't see an `AddOns` folder inside `Interface`, just create one with that exact spelling.
+
+When you're done it should look like this:
+
+```
+_classic_/
+└── Interface/
+    └── AddOns/
+        └── EnchantClickables/
+            ├── EnchantClickables.toc
+            ├── Init.lua
+            └── EnchantList.lua
+```
+
+### Step 4 — Turn it on
+
+Fully quit WoW if it's running and start it again. (A `/reload` is **not** enough — the game only scans for new addon folders at launch.)
+
+At the character select screen, click **AddOns** in the bottom left and make sure **Enchant Clickables** is checked. If it's greyed out or missing, tick **Load out of date AddOns** at the top.
+
+### Checking it worked
+
+Log in and open a trade with anyone. Have them put an enchantable item in the **"Will not be traded"** slot. The button list appears docked to the right of the trade window.
+
+If nothing shows up, that's expected in two cases: you don't know any enchants for that item's slot, or you're missing the reagents. Try it with an item you know you can enchant.
+
+### Updating later
+
+Repeat the same steps and overwrite the old `EnchantClickables` folder when asked. Your settings live in the file itself, so there's nothing to back up.
 
 ---
 
